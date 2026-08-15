@@ -1,0 +1,6 @@
+# pac AUR 审查中转站配置
+# 强制使用 public 后端（跳过本地 opencode），走下方中转站端点
+set -gx DISABLE_OPENCODE 1
+set -gx PAC_REVIEW_ENDPOINT "https://opencode.ai/zen/go/v1/chat/completions"
+set -gx PAC_REVIEW_API_KEY "{{ .pacReviewApiKey }}"
+set -gx PAC_REVIEW_MODEL "deepseek-v4-flash"
