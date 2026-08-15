@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+
+export MOZ_LEGACY_PROFILES=1  # 使用 ~/.zen 应用数据目录 + Default profile（输入法正常的关键）
+export GTK_IM_MODULE=fcitx    # Zen 153 在当前 Wayland 会话中使用 Fcitx GTK3 提交路径
+# 注意：不要设置 MOZ_ENABLE_WAYLAND=1 —— 它会在本机（niri+fcitx5+Firefox 153）破坏中文输入
+# Firefox 153 在 Wayland 会话下默认就走 Wayland，无需该变量
+
+# 不默认带 --remote-debugging-port：该参数开启 WebDriver 自动化模式，
+# 输入事件管线改道，fcitx5 候选栏正常但 commit 不上屏（实测实锤）。
+# 需要调试端口的场景（Noctalia 的 restart-zen.py 快照标签）自行显式传参。
+
+exec /home/muelsyse/.local/share/zen-browser-bin/zen-bin "$@"

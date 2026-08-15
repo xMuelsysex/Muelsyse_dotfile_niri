@@ -1,0 +1,32 @@
+// Personal Niri overrides.
+// Keep machine-specific startup, gestures, and window rules here so upstream
+// imports stay isolated.
+
+binds {
+    Alt+A hotkey-overlay-title="搜索文件 FSearch" { spawn "fsearch"; }
+}
+
+// Desktop hot corners are handled by Noctalia (bottom-right window switcher).
+gestures {
+    hot-corners {
+        off
+    }
+}
+
+// Use cached blur for Chrome to avoid continuous wallpaper sampling on the
+// NVIDIA high-refresh compositor path.
+window-rule {
+    match app-id=r#"^google-chrome$"#
+    opacity 0.9
+    background-effect { blur true; xray true; }
+}
+
+// Enable on-demand VRR for common game/fullscreen surfaces.
+// Output side is `variable-refresh-rate on-demand=true` in noctalia/outputs.kdl.
+window-rule {
+    match app-id=r#"steam_app_.*"#
+    match app-id=r#"(?i)gamescope"#
+    match app-id=r#"(?i)^minecraft"#
+    match app-id=r#"(?i)^osu!"#
+    variable-refresh-rate true
+}

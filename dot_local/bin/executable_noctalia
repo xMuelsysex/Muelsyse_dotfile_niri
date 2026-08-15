@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+export NOCTALIA_ASSETS_DIR="/usr/share/noctalia/assets"
+exec "$HOME/.local/share/noctalia-overview-animation/noctalia" "$@"

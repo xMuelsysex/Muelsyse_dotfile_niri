@@ -1,0 +1,40 @@
+#!/usr/bin/env bash
+# 从 Noctalia 回滚到 DMS
+set -euo pipefail
+
+NIRI="${XDG_CONFIG_HOME:-$HOME/.config}/niri"
+STAMP=$(date +%Y%m%d-%H%M%S)
+
+pkill -x noctalia 2>/dev/null || true
+pkill -f 'mpvpaper-sync' 2>/dev/null || true
+pkill -x wlsunset 2>/dev/null || true
+
+if [[ -f "$NIRI/config.kdl.pre-noctalia" ]]; then
+  cp -a "$NIRI/config.kdl" "$NIRI/config.kdl.bak-rollback-$STAMP"
+  cp -a "$NIRI/config.kdl.pre-noctalia" "$NIRI/config.kdl"
+  echo "已恢复 config.kdl.pre-noctalia"
+elif [[ -f "$NIRI/config.kdl.backup1783770072" ]]; then
+  cp -a "$NIRI/config.kdl.backup1783770072" "$NIRI/config.kdl"
+  echo "已恢复旧 backup"
+else
+  echo "未找到 pre-noctalia 备份，尝试从 migration backup 恢复..."
+  B=$(cat "$NIRI/.last-migration-backup" 2>/dev/null || true)
+  if [[ -n "$B" && -f "$B/niri/config.kdl" ]]; then
+    cp -a "$B/niri/config.kdl" "$NIRI/config.kdl"
+    echo "已从 $B 恢复"
+  else
+    echo "回滚失败: 无可用备份"
+    exit 1
+  fi
+fi
+
+# 恢复 effects 为 normal
+ln -sfn "$NIRI/effects_normal.kdl" "$NIRI/effects.kdl" 2>/dev/null || true
+
+if ! pgrep -f 'dms run' >/dev/null 2>&1; then
+  nohup dms run >/tmp/dms-boot.log 2>&1 &
+fi
+
+niri msg action load-config-file 2>/dev/null || true
+echo "已回滚 DMS。若界面异常请注销重进。"
+echo "也可: quickload"

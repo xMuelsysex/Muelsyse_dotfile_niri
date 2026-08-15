@@ -1,0 +1,6 @@
+#!/bin/bash
+# Quark Cloud Drive launcher using wine-staging (Wayland native)
+# Bypasses deepin-wine8-stable which has XWayland client limit issues
+export WINEPREFIX="$HOME/.deepinwine/Deepin-QuarkCloudDrive"
+export WINEESYNC=1
+exec /usr/bin/wine "C:/Program Files (x86)/quark-cloud-drive/QuarkCloudDrive.exe" "$@"

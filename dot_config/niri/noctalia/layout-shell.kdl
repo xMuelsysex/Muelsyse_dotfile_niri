@@ -1,0 +1,22 @@
+// Frozen shell-side layout tweaks (from former dms/layout.kdl)
+// 主 gaps/preset 仍在 layout.kdl；这里只补边框宽度与全局圆角
+
+layout {
+    // 桌面背景不透明，overview 缩略图也保持独立背景；只有 dms:blurwallpaper 进 backdrop
+    always-center-single-column
+
+    border {
+        width 2
+    }
+
+    focus-ring {
+        width 2
+    }
+}
+
+window-rule {
+    geometry-corner-radius 12
+    clip-to-geometry true
+    tiled-state true
+    draw-border-with-background false
+}

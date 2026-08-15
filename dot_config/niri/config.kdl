@@ -1,0 +1,213 @@
+//  ██████  ██   ██  ██████  ███████ ██ ███    ██ 
+//  ██      ██   ██ ██    ██ ██   ██    ██ ██  ██ 
+//  ███████ ███████ ██    ██ ██████  ██ ██ ██  ██ 
+//       ██ ██   ██ ██    ██ ██   ██ ██ ██  ██ ██ 
+//  ██████  ██   ██  ██████  ██   ██ ██ ██   ████ 
+//
+// Noctalia V5 切换版 — 由 migration 生成
+// 回滚: ~/.local/bin/niri-noctalia-rollback
+
+// 自25.11版本起，niri的配置文件支持了拆分，每一条include都代表把已经拆分出去的配置文件嵌入进来。
+
+include "layout.kdl"
+include "animations.kdl"
+
+// 截图保存位置
+screenshot-path "~/Pictures/Screenshots/Niri-screenshots/%Y-%m-%d_%H-%M-%S.png"
+
+// 环境变量
+environment {
+    LANGUAGE "zh_CN:en"
+    LANG "zh_CN.UTF-8"
+    // 输入法环境变量
+    XMODIFIERS "@im=fcitx"
+    GTK_IM_MODULE "wayland"
+    QT_IM_MODULES "wayland;fcitx"
+    // qt主题
+    QT_QPA_PLATFORMTHEME "gtk3"
+    QT_QPA_PLATFORMTHEME_QT6 "gtk3"
+    // 解决quickshell/noctalia图标主题缺失问题
+    QS_ICON_THEME "Adwaita"
+    // GTK软件使用的渲染器，可以解决n卡双显卡导致的GTK应用启动缓慢问题，AMD或Intel单显卡不需要这行设置可以注释掉
+    //GSK_RENDERER "gl"
+    // 默认文本编辑器
+    EDITOR "vim"
+    XDG_CURRENT_DESKTOP "niri"
+    XDG_SESSION_TYPE "wayland"
+    ELECTRON_OZONE_PLATFORM_HINT "auto"
+    QT_QPA_PLATFORM "wayland;xcb"
+    QT_WAYLAND_DISABLE_WINDOWDECORATION "1"
+}
+
+input {
+    keyboard {
+        xkb {
+        }
+        repeat-delay 250
+	    repeat-rate 35
+    }
+
+    touchpad {
+        tap
+        natural-scroll
+    }
+
+    mouse {
+        accel-speed -0.15
+        accel-profile "flat"
+    }
+
+    trackpoint {
+    }
+}
+
+// ========== 自动启动 ==========
+// DMS → Noctalia
+// spawn-at-startup "dms" "run"
+// Keep IP geolocation and weather on the physical route instead of the proxy egress.
+spawn-at-startup "env" "NO_PROXY=api.noctalia.dev,api.open-meteo.com" "no_proxy=api.noctalia.dev,api.open-meteo.com" "noctalia"
+// 在 Niri 总览期间隐藏 Noctalia 顶栏
+spawn-at-startup "~/.config/noctalia/overview-bar-sync.sh"
+// 护眼状态与 effects.kdl 对齐
+spawn-at-startup "~/.config/niri/toggle-eyecare.sh" "--sync"
+// 保持唤醒状态跨重启恢复
+spawn-at-startup "~/.config/niri/toggle-awake.sh" "--sync"
+// 视频壁纸 Monet 抽帧同步守护（mpvpaper assignments）
+spawn-at-startup "~/.config/noctalia/mpvpaper-sync.sh"
+
+// 录屏修复
+spawn-sh-at-startup "dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP=niri & /usr/lib/xdg-desktop-portal-gnome"
+// GNOME tracker修复
+spawn-sh-at-startup "systemctl --user set-environment XDG_SESSION_CLASS=user"
+// 输入法
+spawn-at-startup "fcitx5"
+// polkit 图形认证代理（挂载/权限弹窗需要）
+spawn-at-startup "/usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1"
+// 截图音效的守护进程
+spawn-at-startup "~/.config/niri/scripts/screenshot-sound.sh"
+// 允许root通过用户的xwayland打开窗口
+spawn-at-startup "xhost" "+si:localuser:root"
+// dms 搜索（DMS 专用，已停用）
+// spawn-at-startup "dsearch" "serve"
+// x11<--> 剪贴板同步
+spawn-at-startup "systemctl" "--user" "start" "linuxqq-clipsync"
+
+// 取消启动niri时自动开启快捷键教程
+hotkey-overlay {
+     skip-at-startup
+}
+
+// 隐藏窗口标题栏
+prefer-no-csd
+
+// 默认窗口规则
+window-rule {
+    match app-id=r#"^org\.wezfurlong\.wezterm$"#
+    default-column-width {}
+}
+window-rule {
+    match app-id=r#"^org\.gnome\."#
+    draw-border-with-background false
+    geometry-corner-radius 12
+    clip-to-geometry true
+}
+window-rule {
+    match app-id=r#"^gnome-control-center$"#
+    match app-id=r#"^pavucontrol$"#
+    match app-id=r#"^nm-connection-editor$"#
+    default-column-width { proportion 0.5; }
+    open-floating false
+}
+window-rule {
+    match app-id=r#"^gnome-calculator$"#
+    match app-id=r#"^galculator$"#
+    match app-id=r#"^blueman-manager$"#
+    match app-id=r#"^xdg-desktop-portal$"#
+    open-floating true
+}
+window-rule {
+    match app-id=r#"^steam$"# title=r#"^notificationtoasts_\d+_desktop$"#
+    default-floating-position x=10 y=10 relative-to="bottom-right"
+    open-focused false
+}
+window-rule {
+    match app-id=r#"^org\.wezfurlong\.wezterm$"#
+    match app-id="Alacritty"
+    match app-id="com.mitchellh.ghostty"
+    match app-id="kitty"
+    draw-border-with-background false
+}
+window-rule {
+    match app-id="zen"
+    draw-border-with-background false
+    focus-ring {
+        off
+    }
+    border {
+        off
+    }
+}
+window-rule {
+    match app-id=r#"firefox$"# title="^Picture-in-Picture$"
+    match app-id="zoom"
+    open-floating true
+}
+
+// Noctalia 面板默认浮动
+window-rule {
+    match app-id=r#"dev.noctalia.Noctalia"#
+    open-floating true
+}
+// 兼容仍可能出现的 quickshell 表面
+window-rule {
+    match app-id=r#"org.quickshell$"#
+    open-floating true
+}
+
+// Noctalia / mpvpaper 图层
+// noctalia-wallpaper 留在桌面 Background 层（锐利）
+// noctalia-backdrop 进 overview backdrop（模糊大背景）
+layer-rule {
+    match namespace="^noctalia-wallpaper*"
+}
+layer-rule {
+    match namespace="^noctalia-backdrop$"
+    place-within-backdrop true
+}
+layer-rule {
+    match namespace="^mpvpaper$"
+}
+layer-rule {
+    match namespace="^noctalia-bar-bar$"
+    opacity 1.0
+    shadow { off; }
+}
+
+// ========== includes ==========
+// 窗口管理键（Shorin，已去 DMS）
+include "binds-wm.kdl"
+// Super+Tab / Alt-Tab 缩略图（原 dms 生成，内容为 niri recent-windows，可留）
+include "noctalia/supertab.kdl"
+include "noctalia/alttab.kdl"
+include optional=true "shorin-windowrules.kdl"
+
+// Noctalia 壳快捷键
+include "noctalia/binds-shell.kdl"
+
+// 冻结的输出 / Monet 边框色 / 壳 layout
+include "noctalia/outputs.kdl"
+//include "noctalia/colors.kdl"
+include "noctalia/layout-shell.kdl"
+
+// blur 基础；其后 effects 覆盖（护眼时 off blur + 不透明）
+include "blur.kdl"
+include "effects.kdl"
+
+binds {
+    Mod+Shift+S { spawn "mark-shot"; }
+}
+
+include "noctalia.kdl"
+
+// Personal rules and startup entries live here so upstream imports stay isolated.
+include "__custom__.kdl"

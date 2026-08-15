@@ -1,0 +1,99 @@
+// Noctalia V5 壳层快捷键（保留 Shorin 键位习惯，后端换 noctalia msg）
+// 文档: https://docs.noctalia.dev/v5/ipc/
+
+binds {
+    // 设置
+    Mod+F2 hotkey-overlay-title="设置 Settings" {
+        spawn "noctalia" "msg" "settings-toggle";
+    }
+
+    // 启动器（失败时回落 fuzzel）
+    Mod+Z hotkey-overlay-title="程序菜单 Applauncher" {
+        spawn-sh "noctalia msg panel-toggle launcher || fuzzel";
+    }
+
+    // 控制中心（Nyx 用 Mod+I；此处工作区上下仍是 U/I，故用 Mod+Shift+I）
+    Mod+Shift+I hotkey-overlay-title="控制中心 Control Center" {
+        spawn "noctalia" "msg" "panel-toggle" "control-center";
+    }
+
+    // 电源/会话菜单
+    Super+X hotkey-overlay-title="电源菜单 Power Menu" {
+        spawn "noctalia" "msg" "panel-toggle" "session";
+    }
+
+    // 剪贴板
+    Mod+Alt+V hotkey-overlay-title="剪贴板 Clipboard" {
+        spawn "noctalia" "msg" "panel-toggle" "clipboard";
+    }
+
+    // 锁屏
+    Mod+Alt+L hotkey-overlay-title="锁屏 Lock Screen" {
+        spawn "noctalia" "msg" "session" "lock";
+    }
+
+    // 关屏 + 锁屏挂起
+    Mod+Alt+P hotkey-overlay-title="挂起 Suspend" {
+        spawn-sh "niri msg action power-off-monitors && noctalia msg session lock-and-suspend";
+    }
+
+    // 静态壁纸（Monet 取色入口）
+    Mod+Alt+W hotkey-overlay-title="壁纸切换 Wallpaper" {
+        spawn "noctalia" "msg" "panel-toggle" "wallpaper";
+    }
+    Mod+Y hotkey-overlay-title="壁纸切换 Wallpaper" {
+        spawn "noctalia" "msg" "panel-toggle" "wallpaper";
+    }
+
+    // 动态壁纸选择器（mpvpaper 插件）
+    Mod+Shift+Y hotkey-overlay-title="动态壁纸 Live Wallpaper" {
+        spawn "noctalia" "msg" "panel-toggle" "noctalia/mpvpaper:picker";
+    }
+
+    // 护眼：色温 + 关模糊/不透明
+    // 注意：niri 默认 Mod=Super，不能用 Super+N（会撞 Mod+N 浮动焦点）
+    Mod+Shift+N hotkey-overlay-title="护眼模式 EyeCare" {
+        spawn-sh "~/.config/niri/toggle-eyecare.sh";
+    }
+
+    // 任务管理器（Noctalia 无 processlist，用系统监视器）
+    Ctrl+Alt+Delete hotkey-overlay-title="任务管理器 Task Manager" {
+        spawn-sh "gnome-system-monitor || btop || kitty -e btop";
+    }
+
+    // 音量（Noctalia OSD）；失败时 wpctl 兜底
+    XF86AudioRaiseVolume allow-when-locked=true {
+        spawn-sh "noctalia msg volume-up || wpctl set-volume @DEFAULT_AUDIO_SINK@ 3%+";
+    }
+    XF86AudioLowerVolume allow-when-locked=true {
+        spawn-sh "noctalia msg volume-down || wpctl set-volume @DEFAULT_AUDIO_SINK@ 3%-";
+    }
+    XF86AudioMute allow-when-locked=true {
+        spawn-sh "noctalia msg volume-mute || wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle";
+    }
+    XF86AudioMicMute allow-when-locked=true {
+        spawn-sh "noctalia msg mic-mute || wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle";
+    }
+
+    // 媒体键（Noctalia V5: media toggle/next/previous）
+    XF86AudioPlay allow-when-locked=true {
+        spawn-sh "noctalia msg media toggle || playerctl play-pause";
+    }
+    XF86AudioPause allow-when-locked=true {
+        spawn-sh "noctalia msg media toggle || playerctl play-pause";
+    }
+    XF86AudioPrev allow-when-locked=true {
+        spawn-sh "noctalia msg media previous || playerctl previous";
+    }
+    XF86AudioNext allow-when-locked=true {
+        spawn-sh "noctalia msg media next || playerctl next";
+    }
+
+    // 亮度（ddcutil 在 noctalia-config 中关闭，走 Noctalia 亮度服务）
+    XF86MonBrightnessUp allow-when-locked=true {
+        spawn-sh "noctalia msg brightness-up || brightnessctl set +5%";
+    }
+    XF86MonBrightnessDown allow-when-locked=true {
+        spawn-sh "noctalia msg brightness-down || brightnessctl set 5%-";
+    }
+}

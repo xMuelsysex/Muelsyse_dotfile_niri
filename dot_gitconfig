@@ -1,0 +1,13 @@
+[credential "https://github.com"]
+	helper = 
+	helper = !/usr/bin/gh auth git-credential
+[credential "https://gist.github.com"]
+	helper = 
+	helper = !/usr/bin/gh auth git-credential
+[user]
+	name = xMuelsysex
+	email = 120050118gy@gmail.com
+[core]
+	pager = delta
+[interactive]
+	diffFilter = delta --color-only

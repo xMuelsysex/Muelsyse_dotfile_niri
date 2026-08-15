@@ -1,0 +1,24 @@
+# 敏感文件隔离黑名单（chezmoi apply 时跳过这些路径）
+
+# 认证凭据
+dot_config/gh/hosts.yml
+dot_config/gh/private_config.yml
+dot_config/kdeconnect/*.pem
+dot_config/opencode/opencode.json
+dot_config/opencode/node_modules/
+
+# fcitx5 运行时缓存
+dot_config/fcitx5/conf/cached_layouts
+dot_config/fcitx5/conf/notifications.conf
+
+# 会话缓存与日志
+dot_config/obs-studio/logs/
+dot_config/obs-studio/updates/
+dot_config/obs-studio/profiler_data/
+dot_config/noctalia/plugins/github-feed/settings.json
+dot_config/noctalia/plugins/github-feed/cache/
+dot_config/evolution/
+dot_config/telegram-desktop/
+dot_config/google-chrome*/
+dot_config/zen/
+

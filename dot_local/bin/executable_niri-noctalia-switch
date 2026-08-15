@@ -1,0 +1,83 @@
+#!/usr/bin/env bash
+# 切换到 Noctalia V5（需已安装且可运行的 noctalia）
+set -euo pipefail
+
+NIRI="${XDG_CONFIG_HOME:-$HOME/.config}/niri"
+STAMP=$(date +%Y%m%d-%H%M%S)
+
+if ! command -v noctalia >/dev/null 2>&1; then
+  echo "错误: 未找到 noctalia。请先安装:"
+  echo "  sudo pacman -Syu"
+  echo "  sudo pacman -S --needed noctalia-git wlsunset"
+  echo "  或本机编译: yay -S noctalia-git"
+  exit 1
+fi
+
+# 二进制 ABI 自检（archlinuxcn 预编译包常要求比本机更新的 glibc）
+if ! noctalia --help >/tmp/noctalia-selftest.log 2>&1; then
+  echo "错误: noctalia 无法启动。日志:"
+  cat /tmp/noctalia-selftest.log
+  echo
+  if rg -q 'GLIBC_|GLIBCXX_' /tmp/noctalia-selftest.log 2>/dev/null; then
+    echo "这是 glibc/libstdc++ 版本不够新。处理方式二选一:"
+    echo "  1) 全系统更新后再装包:  sudo pacman -Syu && sudo pacman -S noctalia-git"
+    echo "  2) 用本机工具链从 AUR 编译:  yay -S noctalia-git --rebuild"
+  fi
+  exit 1
+fi
+
+if ! command -v mpvpaper >/dev/null 2>&1; then
+  echo "警告: 未找到 mpvpaper（动态壁纸不可用）。AUR: yay -S mpvpaper-git"
+fi
+
+if [[ ! -f "$NIRI/config.noctalia.kdl" ]]; then
+  echo "缺少 $NIRI/config.noctalia.kdl"
+  exit 1
+fi
+
+# 先起 Noctalia 验证进程能活，再动 niri 配置
+pkill -x noctalia 2>/dev/null || true
+sleep 0.2
+nohup noctalia >/tmp/noctalia-boot.log 2>&1 &
+sleep 1.5
+if ! pgrep -x noctalia >/dev/null 2>&1; then
+  echo "错误: noctalia 启动后立刻退出。见 /tmp/noctalia-boot.log"
+  cat /tmp/noctalia-boot.log 2>/dev/null || true
+  exit 1
+fi
+echo "[ok] noctalia 进程在跑"
+
+cp -a "$NIRI/config.kdl" "$NIRI/config.kdl.bak-switch-$STAMP"
+cp -a "$NIRI/config.noctalia.kdl" "$NIRI/config.kdl"
+echo "[ok] 已写入 Noctalia 版 config.kdl"
+
+pkill -f '/usr/bin/dms run' 2>/dev/null || true
+pkill -f 'qs -p .*/dms' 2>/dev/null || true
+pkill -f 'quickshell/dms' 2>/dev/null || true
+sleep 0.4
+echo "[ok] 已请求停止 DMS"
+
+if command -v niri >/dev/null 2>&1; then
+  niri msg action load-config-file && echo "[ok] niri 配置已重载" || {
+    echo "[!] load-config-file 失败，请注销重进会话"
+  }
+fi
+
+if ! pgrep -x noctalia >/dev/null 2>&1; then
+  nohup noctalia >/tmp/noctalia-boot.log 2>&1 &
+  sleep 1
+fi
+
+"$NIRI/toggle-eyecare.sh" --sync 2>/dev/null || true
+~/.config/noctalia/niri-colors-sync.sh 2>/dev/null || true
+
+echo
+echo "完成。验收:"
+echo "  顶栏出现 | Mod+Z 启动器 | Super+X 电源 | Mod+Alt+W 壁纸"
+echo "  Super+N 护眼 | Mod+Shift+Y 动态壁纸 | Mod+Shift+I 控制中心"
+echo
+echo "回滚: niri-noctalia-rollback"
+echo "日志: /tmp/noctalia-boot.log"
+if pgrep -a -f 'dms run' >/dev/null; then
+  echo "警告: DMS 仍在运行，可手动: pkill -f 'dms run'"
+fi

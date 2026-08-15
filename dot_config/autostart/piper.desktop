@@ -1,0 +1,9 @@
+[Desktop Entry]
+Type=Application
+Name=Piper
+Comment=Autostart Piper to apply mouse configuration
+Exec=piper
+Icon=org.freedesktop.Piper
+Terminal=false
+Categories=GTK;GNOME;Utility;
+X-GNOME-Autostart-enabled=true

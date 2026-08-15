@@ -1,0 +1,8 @@
+// Frozen from DMS — edit freely; no longer auto-overwritten
+output "eDP-2" {
+    mode "2560x1440@165.001"
+    scale 1.5
+    position x=0 y=0
+    // 仅在匹配 variable-refresh-rate 窗口规则的应用上启用 VRR
+    variable-refresh-rate on-demand=true
+}

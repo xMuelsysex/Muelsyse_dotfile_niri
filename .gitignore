@@ -1,0 +1,11 @@
+# 双保险：即使 chezmoiignore 漏配，git 也绝不提交这些
+.env
+# 本地工作痕迹，不随仓库提交
+.pi/
+dot_config/gh/private_config.yml
+dot_config/kdeconnect/private_privateKey.pem
+dot_config/kdeconnect/private_certificate.pem
+dot_config/noctalia/plugins/github-feed/settings.json
+dot_config/noctalia/plugins/github-feed/cache/
+dot_local/share/fcitx5/rime/installation.yaml
+dot_local/share/fcitx5/rime/user.yaml

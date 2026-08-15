@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Version=1.0
+Name=CC Switch
+Comment=CC Switchstartup script
+Exec=/usr/bin/cc-switch 
+StartupNotify=false
+Terminal=false
