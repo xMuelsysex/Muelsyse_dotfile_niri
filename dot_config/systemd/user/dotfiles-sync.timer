@@ -1,0 +1,9 @@
+[Unit]
+Description=Run dotfiles sync every 8 hours
+
+[Timer]
+OnCalendar=*-*-* 00/8:00:00
+Persistent=true
+
+[Install]
+WantedBy=timers.target

@@ -28,7 +28,7 @@
 sudo pacman -S chezmoi fish starship alacritty niri fcitx5
 
 # 拉取并应用配置
-chezmoi init --apply https://github.com/xMuelsysex/Muelsyse_dotfile_niri
+chezmoi init --apply https://github.com/muelsyse/Muelsyse_dotfile_niri
 ```
 
 ## 核心配置导航

@@ -4,6 +4,11 @@
 
 binds {
     Alt+A hotkey-overlay-title="搜索文件 FSearch" { spawn "fsearch"; }
+
+    // NyxNiri 星环启动器 (Star-Ring Radial Menu) — v2.3.0
+    // 本地 Mod+S 已占用，星环改用 Ctrl+MouseForward；scratchpad 切换用 Mod+Grave（与上游一致）
+    Ctrl+MouseForward repeat=false hotkey-overlay-title="星环菜单 Star-Ring Menu" { spawn "~/.config/niri/scripts/niri-scratch-menu.py"; }
+    Mod+Grave hotkey-overlay-title="Scratchpad 终端 Scratchpad Terminal" { spawn "~/.config/niri/scripts/niri-scratch-toggle.sh" "kitty"; }
 }
 
 // Desktop hot corners are handled by Noctalia (bottom-right window switcher).
@@ -29,4 +34,13 @@ window-rule {
     match app-id=r#"(?i)^minecraft"#
     match app-id=r#"(?i)^osu!"#
     variable-refresh-rate true
+}
+
+// Scratchpad 终端浮动（对应 scratch-toggle 的 kitty --app-id scratchpad）
+window-rule {
+    match app-id=r#"^scratchpad$"#
+    open-floating true
+    default-floating-position x=0 y=40 relative-to="top"
+    default-column-width { proportion 0.5; }
+    default-window-height { proportion 0.45; }
 }
