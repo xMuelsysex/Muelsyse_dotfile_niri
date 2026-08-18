@@ -16,3 +16,6 @@ export PATH=~/.npm-global/bin:$PATH
 export PATH="$HOME/bin:$PATH"
 
 [ ! -f "$HOME/.x-cmd.root/X" ] || . "$HOME/.x-cmd.root/X" # boot up x-cmd.
+
+# cc-switch-codex provider: allow 1M context (catalog-driven clamp upper bound)
+export PI_CC_SWITCH_CODEX_CONTEXT_WINDOW=1048576
