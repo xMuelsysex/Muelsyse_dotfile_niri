@@ -8,6 +8,10 @@ cd "$SOURCE_DIR"
 
 chezmoi re-add 2>>"$LOG"
 
+# Noctalia 动态段不回传：取色会持续改写 starship palette 段，re-add 后恢复仓库静态版本
+# （本地 ~/.config/starship.toml 不受影响，Noctalia 会继续写回动态段）
+git checkout -- dot_config/starship.toml
+
 # 密钥检查：提交前拦截疑似密钥，避免推送到 GitHub
 # 仅匹配密钥特征，不匹配 css 属性名(sk-border)、键盘布局(keyboard-sk-qwerty)等正常内容
 # 如确认安全可用 DOTFILES_SYNC_ALLOW_KEYS=1 强制放行

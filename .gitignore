@@ -10,5 +10,34 @@ dot_config/noctalia/plugins/github-feed/cache/
 dot_local/share/fcitx5/rime/installation.yaml
 dot_local/share/fcitx5/rime/user.yaml
 
+# Noctalia 动态取色产物：每次取色都会改写，仅存本地，不入仓库
+# （由 noctalia 工具生成；gtk settings.ini 由 theme-sync.sh 托管）
+dot_config/alacritty/themes/noctalia.toml
+dot_config/btop/themes/noctalia.theme
+dot_config/cava/themes/noctalia
+dot_config/fastfetch/config.jsonc
+dot_config/fastfetch/themes/noctalia.jsonc
+dot_config/foot/themes/noctalia
+dot_config/ghostty/themes/noctalia
+dot_config/gtk-3.0/noctalia.css
+dot_config/gtk-3.0/settings.ini
+dot_config/gtk-4.0/noctalia.css
+dot_config/gtk-4.0/settings.ini
+dot_config/kitty/current-theme.conf
+dot_config/kitty/themes/noctalia.conf
+dot_config/niri/dms/
+dot_config/niri/noctalia.kdl
+dot_config/qt5ct/colors/noctalia.conf
+dot_config/qt6ct/colors/noctalia.conf
+dot_config/wezterm/colors/Noctalia.toml
+dot_local/share/color-schemes/DankMatugen*
+dot_local/share/color-schemes/noctalia.colors
+
+# fcitx5 私有配置（GUI 修改会重写）
+dot_config/fcitx5/private_profile
+
+# Python 编译缓存
+dot_config/noctalia/templates/zen-browser/__pycache__/
+
 # chezmoi 私有数据（API key 等），仅本地
 .chezmoidata.toml
