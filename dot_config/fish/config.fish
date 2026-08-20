@@ -254,3 +254,6 @@ if status is-interactive
         alias ls 'eza --icons=auto'
     end
 end
+
+# pi-agent maestro CLI
+fish_add_path "$HOME/.pi/agent/npm/node_modules/.bin"

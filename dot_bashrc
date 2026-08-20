@@ -19,3 +19,4 @@ export PATH="$HOME/bin:$PATH"
 
 # cc-switch-codex provider: allow 1M context (catalog-driven clamp upper bound)
 export PI_CC_SWITCH_CODEX_CONTEXT_WINDOW=1048576
+export PATH="$HOME/.pi/agent/npm/node_modules/.bin:$PATH"
