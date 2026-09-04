@@ -1,10 +1,11 @@
 // Frozen from DMS — edit freely; no longer auto-overwritten
-output "DP-1" {
+// 按显示器制造商/型号/序列号匹配，避免 DP/eDP 接口编号变化导致配置失效。
+output "Shenzhen KTC Technology Group Q24T09 0x00000001" {
     mode "2560x1440@180.000"
     scale 1
     position x=0 y=0
 }
-output "eDP-1" {
+output "BOE NE156QHM-NY1 Unknown" {
     mode "2560x1440@165.001"
     scale 1.5
     position x=2560 y=0
