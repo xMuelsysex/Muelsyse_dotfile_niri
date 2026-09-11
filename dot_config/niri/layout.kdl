@@ -14,6 +14,7 @@ layout {
     // - "on-overflow", focusing a column will center it if it doesn't fit
     //   together with the previously focused column.
     center-focused-column "never"
+    always-center-single-column
     // You can customize the widths that "switch-preset-column-width" (Mod+R) toggles between.
     // 预设窗口宽度
     preset-column-widths {
@@ -53,7 +54,7 @@ layout {
         // Uncomment this line to disable the focus ring.
         // off
         // How many logical pixels the ring extends out from the windows.
-        width 3
+        width 2
 
         // Colors can be set in a variety of ways:
         // - CSS named colors: "red"
@@ -61,8 +62,9 @@ layout {
         // - CSS-like notation: "rgb(255, 127, 0)", rgba(), hsl() and a few others.
 
         // Color of the ring on the active monitor.
-        //active-color "@primary"
-        //active-color "#00000000"
+        active-color "#1a73e8"
+        inactive-color "transparent"
+        urgent-color "#ffb4ab"
         // Color of the ring on inactive monitors.
         //
         // The focus ring only draws around the active window, so the only place
@@ -133,16 +135,27 @@ layout {
         // pixels and match the CSS box-shadow properties.
 
         // Softness controls the shadow blur radius.
-        softness 20
+        softness 28
 
         // Spread expands the shadow.
-        spread 2
+        spread 6
 
         // Offset moves the shadow relative to the window.
-        offset x=-4 y=-4
+        offset x=0 y=0
 
         // You can also change the shadow color and opacity.
-        color "rgba(0, 0, 0, 0.7)"
+        color "#1a73e895"
+        inactive-color "#00000045"
+    }
+
+    tab-indicator {
+        active-color "#b6c7e7"
+        inactive-color "#374761"
+        urgent-color "#ffb4ab"
+    }
+
+    insert-hint {
+        color "#b6c7e780"
     }
 
     // Struts shrink the area occupied by windows, similarly to layer-shell panels.

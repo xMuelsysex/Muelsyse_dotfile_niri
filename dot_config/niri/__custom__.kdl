@@ -44,3 +44,10 @@ window-rule {
     default-column-width { proportion 0.5; }
     default-window-height { proportion 0.45; }
 }
+
+// NyxNiri glow preset: rounded windows with clipped content.
+window-rule {
+    geometry-corner-radius 12
+    clip-to-geometry true
+    draw-border-with-background false
+}
