@@ -51,3 +51,9 @@ window-rule {
     clip-to-geometry true
     draw-border-with-background false
 }
+
+// 输入法主题自行控制背景透明度，避免叠加全局未聚焦窗口透明度。
+window-rule {
+    match app-id="fcitx" title="Fcitx5 Input Window"
+    opacity 1.0
+}
